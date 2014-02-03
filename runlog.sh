@@ -181,45 +181,43 @@ else
 	pacemin=`date -d "1970-1-1 0:00 +$pacesex seconds" "+%M:%S"`
 	echo -e "\n$date\n\nDistance: $dist $dunit \nTime $rtime \nPace: $pacemin min/$dunit\nWeight: $weight ($wchange from initial $sweight)\nCalories: $calsrounded\n-------------------\n$notes\n------------------\n" > $filedate.run
 	$editor $filedate.run
-# FRIENDICA PLUGIN START
-# This bit allows one to post to Friendica (see www.friendica.com), and to the @runner group
+
+# REDMATRIX PLUGIN START
+# This bit allows one to post to red (see https://redmatrixproject.info), and to the @runner group
 # Only implemented if the $fplug value in ~/.runlog.conf = y
-# and, of course, the proper friendica parameters (user:pass, site.url) are present in same .conf file
-if [[ $fplug = y ]]; then 
-# initializing some variables for xposting.
-let snet=twit=fb=dw=lj=ij=tum=wp=lt=pp=0
-	read -p "Post to Friendica? (y/n) " post
+# and, of course, the proper redmatrix parameters (user:pass, site.url) are present in same .conf file
+if [[ $rplug = y ]]; then
+	# initializing some variables for xposting.
+	let snet=twit=fb=dw=lj=ij=tum=wp=lt=pp=0
+	read -p "Post to Red? (y/n) " post
 	if [[ $post = y ]]; then
-		echo -e "@runner #running\nposted with runlog - http://tonyb.us/runlog\n----------------\n" >> $rlpath/$filedate.run
+		echo -e "@runner #running\nposted with runlog - http://tazd.info/runlog\n----\n" >> $rlpath/$filedate.run
 		ud="$(cat $rlpath/$filedate.run)"
 		title="$uname's Runlog"
-		read -p "Will you be crossposting to other networks? (y/n) " xpo
+		read -p "Will you be crossposting to Friendica, Pumpio, and Libertree? (y/n) " xpo
 		if [[ $xpo == y ]]; then
+			fd=1
 			echo "For each of the following, if you wish to xpost to the network, enter 1:"
 			read -p "statusnet? " snet
-			read -p "twitter? " twit
-			read -p "facebook? " fb
-			read -p "dreamwidth?  " dw
-			read -p "livejournal? " lj
-			read -p "insanejournal?" ij
-			read -p "tumblr? " tum
-			read -p "wordpress? " wp 
+			read -p "friendica? " fd
+			read -p "dreamwidth? " dw
+			read -p "wordpress? " wp
 			read -p "libertree? " lt
-			read -p "pumpio?  " pp
+			read -p "pumpio? " pp
+			read -p "tumblr? " tu
+			read -p "twitter? " tw
+		else
+			fd=0
 		fi
-		if [[ $(curl -k -u $fuser:$fpass -d "status=$ud&title=$title&ljpost_enable=$lj&ijpost_enable=$ij&dwpost_enable=$dw&wppost_enable=$wp&tumblr_enable=$tum&facebook_enable=$fb&twitter_enable=$twit&libertree_enable=$lt:65&statusnet_enable=$snet&pumpio_enable=$pp&source=runlog.sh" $fsite/api/statuses/update.xml | grep error) ]]; then
+		if [[ $(curl -k -u $ruser:$rpass -d "status=$ud&title=$title&channel=$chan&app=runlog.sh&rtof_enable=$fd" $rsite/api/statuses/update.xml | grep error) ]]; then
 			echo "Error!"
 			exit
-		else 
+		else
 			echo "Success!"
-		read -p "Shall we have a look in your a browser now? (y/n): " op
-			if [ $op = "y" ]; then
-			 $browser $fsite/u/$fuser
-			fi
 		fi
-	fi
+# REDMATRIX# PLUGIN END
 fi
-# FRIENDICA PLUGIN END
+fi
 fi
 fi
 fi
