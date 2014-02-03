@@ -215,9 +215,9 @@ if [[ $rplug = y ]]; then
 		else
 			echo "Success!"
 		fi
+	fi
+fi
 # REDMATRIX# PLUGIN END
-fi
-fi
 fi
 fi
 fi
