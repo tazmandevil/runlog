@@ -7,9 +7,9 @@
 # released according to the terms of the GNU GPL v.3 or later#
 ##############################################################
 
-if [ != "$HOME/bin/" ]; then
+if [ ! -d "$HOME/bin/" ]; then
 	mkdir $HOME/bin/
-	$PATH=$PATH:/$HOME/bin/
+	PATH=$PATH:/$HOME/bin/
 	export PATH
 fi
 
@@ -31,6 +31,7 @@ echo "uname=$uname" >> $HOME/.runlog.conf
 echo "rlpath=$rlpath" >> $HOME/.runlog.conf
 echo "editor=$editor" >> $HOME/.runlog.conf
 echo "browser=$browser" >> $HOME/.runlog.conf
+echo "dunit=$dunit" >> $HOME/.runlog.conf
 
 read -p "Will you use the friendica plugin? (y/n)" fplug
 if [[ $fplug = y ]]; then
