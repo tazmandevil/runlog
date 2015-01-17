@@ -7,9 +7,9 @@
 # released according to the terms of the GNU GPL v.3 or later#
 ##############################################################
 
-if [ != "$HOME/bin/" ]; then
+if [ ! -d "$HOME/bin/" ]; then
 	mkdir $HOME/bin/
-	$PATH=$PATH:/$HOME/bin/
+	PATH=$PATH:/$HOME/bin/
 	export PATH
 fi
 
